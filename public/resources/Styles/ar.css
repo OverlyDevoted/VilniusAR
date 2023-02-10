@@ -1,0 +1,19 @@
+html, body{
+    height: 100%;
+    margin: 0;
+}
+#element_container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #161417;
+    flex-direction: column;
+}
+#start_button {
+    background-color: #3C373F;
+    color: aliceblue;
+    border: 2px solid whitesmoke;
+    padding: 1vh;
+    font-size: 3vh;
+}

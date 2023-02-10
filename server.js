@@ -9,8 +9,11 @@ process.title = "demoNFT";
 
 app.use("/static",express.static('public'));
 console.log(__dirname);
-app.get('/', function(request, response){
+app.get('/vilnius-ar', function(request, response){
     response.sendFile(path.join(__dirname + '/public/index.html'));
+});
+app.get('/', function(request, response){
+    response.sendFile(path.join(__dirname + '/public/main.html'));
 });
 
 https.createServer({

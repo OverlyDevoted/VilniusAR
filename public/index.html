@@ -4,19 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <title>Hello WebXR!</title>
+  <title>VilniusAR</title>
 
   <!-- three.js -->
   <script src="https://unpkg.com/three@0.126.0/build/three.js"></script>
   <script src="https://unpkg.com/three@0.126.0/examples/js/loaders/GLTFLoader.js"></script>
-  
+  <!-- Styles -->
+  <link rel="stylesheet" href="./static/resources/Styles/ar.css">
 </head>
 <body>
-
+<div id="element_container">
 <!-- Starting an immersive WebXR session requires user interaction.
     We start this one with a simple button. -->
-<button onclick="activateXR()">Start Hello WebXR</button>
-<button onclick="enableDebug(!debugMode)">Enable debug</button>
+<button id="start_button" onclick="activateXR()">Start Vilnius AR</button>
 <script>
 //raycast
 
@@ -62,7 +62,7 @@ function createMarker(scene)
   markerGroup.visible=false;
   markerGroup.add(placeMarker);
   //placeMarker.position.set(0,0,-1);
-  placeMarker.rotateOnAxis(new THREE.Vector3(-1.0,0.0,0.0), 3.14159/4);
+  //placeMarker.rotateOnAxis(new THREE.Vector3(-1.0,0.0,0.0), 3.14159/4);
   scene.add(markerGroup)
 }
 function createPOI(scene)
@@ -131,8 +131,10 @@ function incrementLoad()
 async function activateXR() {
   // Add a canvas element and initialize a WebGL context that is compatible with WebXR.
   const canvas = document.createElement("canvas");
+  
   document.body.appendChild(canvas);
   const gl = canvas.getContext("webgl", {xrCompatible: true});
+  
   console.log("Active");
   // To be continued in upcoming steps.
   const scene = new THREE.Scene();
@@ -146,17 +148,24 @@ async function activateXR() {
     loader,
     "./static/resources/Rajonai/VilniusMap1-10.gltf", 
     new THREE.Vector3(1,0,0), 
-    0.5, 
+    0.45, 
     new THREE.Vector3(0.1,0.1,0.1)
   );
   addPoi(
     loader,
-    "./static/resources/Rajonai/VilniusMap1-10_2.gltf", 
-    new THREE.Vector3(-1,0,0), 
+    "./static/resources/Rajonai/VGTU2.gltf", 
+    new THREE.Vector3(0,0,1), 
     0.5, 
     new THREE.Vector3(0.1,0.1,0.1)
   );
   
+  addPoi(
+    loader,
+    "./static/resources/Rajonai/PavilJonas.gltf", 
+    new THREE.Vector3(0,0,-1), 
+    0.5, 
+    new THREE.Vector3(0.1,0.1,0.1)
+  );
 
   //scene lighting
   const directionalLight = new THREE.DirectionalLight(0xffffff, 2.5);
@@ -175,7 +184,8 @@ async function activateXR() {
     context: gl
   });
   renderer.autoClear = false;
- 
+  //renderer.setSize(window*window.devicePixelRatio, 745*window.devicePixelRatio);
+  //console.log(new THREE.Vector2(393*window.devicePixelRatio, 745*window.devicePixelRatio));
   // The API directly updates the camera matrices.
   // Disable matrix auto updates so three.js doesn't attempt
   // to handle the matrices independently.
@@ -223,7 +233,9 @@ async function activateXR() {
             const clone = poiMarker.clone();
             scene.add(clone);
             clone.position.copy(markerGroup.position);
-            clone.lookAt(markerGroup.getWorldDirection(new THREE.Vector3));
+            
+            clone.lookAt(new THREE.Vector3(cameraOrigin.x, clone.position.y, cameraOrigin.z));
+            
             clone.translateOnAxis(poiInf[i].pos, poiInf[i].magnitude);
             
             poiInf[i].parent = clone;
@@ -235,7 +247,6 @@ async function activateXR() {
             scene.add(childClone);
 
             clone.layers.enable(1);
-            console.log(clone);
           }
           currentState=ARStates.placed; 
         }
@@ -245,7 +256,6 @@ async function activateXR() {
         {
           for(i=0;i<poiInf.length;i++)
           {
-            console.log(poiInf[i].parent)
             if(poiInf[i].parent==poi.object)
             {
               poiInf[i].parent.visible=!poiInf[i].parent.visible;
@@ -287,14 +297,17 @@ async function activateXR() {
       const view = pose.views[0];
 
       viewport = session.renderState.baseLayer.getViewport(view);
+      console.log(session.renderState.baseLayer.framebufferWidth);
+      console.log(session.renderState.baseLayer.framebufferHeight);
       //setup aspect ratio
       if(!isAspectSet)
       { 
         camera.aspect = (viewport.width/viewport.height);
+        renderer.setSize(session.renderState.baseLayer.framebufferWidth, session.renderState.baseLayer.framebufferHeight);
+        isAspectSet=true;
       }
-      //console.log(viewport.width + " "+ viewport.height);
-      renderer.setSize(viewport.width, viewport.height)
-
+      //console.log(new THREE.Vector2(viewport.width, viewport.height).multiplyScalar(1/window.devicePixelRatio));
+      //renderer.setSize(viewport.width, viewport.height);
       // Use the view's transform matrix and projection matrix to configure the THREE.camera.
       camera.matrix.fromArray(view.transform.matrix)
       camera.projectionMatrix.fromArray(view.projectionMatrix);
@@ -310,7 +323,7 @@ async function activateXR() {
           isMarkerLoaded=true;
         }
         //make so the place marker looks at the camera
-        markerGroup.visible = true;
+        
         markerGroup.position.set(hitPose.transform.position.x, hitPose.transform.position.y, hitPose.transform.position.z)
         markerGroup.updateMatrixWorld(true);     
         let lookDir = camera.getWorldPosition(new THREE.Vector3());
@@ -349,10 +362,11 @@ async function activateXR() {
 
       }
       
-      if(load===needToLoad)
+      if(load==needToLoad)
       {
         console.log("Fully loaded");
         loadingGroup.visible=false;
+        markerGroup.visible = true;
         currentState = ARStates.waitForPlace;
         load++;
       }
@@ -379,5 +393,6 @@ session.requestAnimationFrame(onXRFrame);
 
 }
 </script>
+</div>
 </body>
 </html>
