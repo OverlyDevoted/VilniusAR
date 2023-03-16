@@ -8,6 +8,7 @@ const { dirname } = require('path');
 process.title = "demoNFT";
 
 app.use("/static",express.static('public'));
+app.use("/modules",express.static('node_modules'));
 console.log(__dirname);
 app.get('/vilnius-ar', function(request, response){
     response.sendFile(path.join(__dirname + '/public/index.html'));
