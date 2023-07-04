@@ -114,10 +114,12 @@ function createLoading(scene, parent)
 
 //loading counter variables
 let load=0;
-let needToLoad = 1;
+let needToLoad = 0;
 function incrementLoad()
 {
+  
   load++;
+  console.log(load + "/" + needToLoad);
   try
   {
     loadingText.text = "Loading " + load + "/" + "needToLoad";
@@ -153,7 +155,7 @@ async function activateXR() {
   );
   addPoi(
     loader,
-    "./static/resources/Rajonai/VGTU2.gltf", 
+    "./static/resources/Rajonai/Centr.glb", 
     new THREE.Vector3(0,0,1), 
     0.5, 
     new THREE.Vector3(0.1,0.1,0.1)
@@ -167,9 +169,18 @@ async function activateXR() {
     new THREE.Vector3(0.1,0.1,0.1)
   );
 
+  const basicSphereGeometry = new THREE.SphereGeometry( 0.5, 32, 16 );
+  const basicGaterial = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
+  const directionalLightDebug = new THREE.Mesh( basicSphereGeometry, basicGaterial );
+  
   //scene lighting
   const directionalLight = new THREE.DirectionalLight(0xffffff, 2.5);
   directionalLight.position.set(0, 5, 0);
+  const ambientLight = new THREE.AmbientLight( 0x404040, 2); // soft white light
+  
+  directionalLight.add(ambientLight);
+  directionalLight.add(directionalLightDebug);
+
   scene.add(directionalLight);
   
   //add map marker objects
@@ -297,13 +308,14 @@ async function activateXR() {
       const view = pose.views[0];
 
       viewport = session.renderState.baseLayer.getViewport(view);
-      console.log(session.renderState.baseLayer.framebufferWidth);
-      console.log(session.renderState.baseLayer.framebufferHeight);
       //setup aspect ratio
+
       if(!isAspectSet)
       { 
         camera.aspect = (viewport.width/viewport.height);
-        renderer.setSize(session.renderState.baseLayer.framebufferWidth, session.renderState.baseLayer.framebufferHeight);
+        //renderer.setSize(session.renderState.baseLayer.framebufferWidth, session.renderState.baseLayer.framebufferHeight);
+        renderer.setSize(viewport.width, viewport.height)
+
         isAspectSet=true;
       }
       //console.log(new THREE.Vector2(viewport.width, viewport.height).multiplyScalar(1/window.devicePixelRatio));
@@ -316,6 +328,7 @@ async function activateXR() {
       
       const hitTestResults = frame.getHitTestResults(hitTestSource);
       if (hitTestResults.length > 0 && markerGroup) {
+        console.log("HIT");
         const hitPose = hitTestResults[0].getPose(referenceSpace);
         if(!isMarkerLoaded)
         {
@@ -347,18 +360,6 @@ async function activateXR() {
         catch(error) {
           console.log(error);
         }
-        
-        
-        
-        //rotate each poiInf parent (marker) too
-
-        /*let camYaw = camera.getWorldDirection(new THREE.Vector3()).projectOnPlane(new THREE.Vector3(0,1,0));
-        
-        //camera direction without pitch - just calculate the angle between the marker and then rotate it by the result
-        if(debugMode)
-        {
-          scene.add(new THREE.ArrowHelper(camYaw, camera.getWorldPosition(new THREE.Vector3()), 2, 0x0ff00f));
-        }*/
 
       }
       
@@ -371,20 +372,7 @@ async function activateXR() {
         load++;
       }
       
-      /*
-      //marker rotation
-      for(var element of poiInf) // 
-      {
-        if(poiInf[0].parent === undefined)
-          break;
-          
-        let direction = element.parent.getWorldDirection(new THREE.Vector3());
-        let origin = element.parent.getWorldPosition(new THREE.Vector3());
-        scene.add(new THREE.ArrowHelper(direction, origin, 2, 0xff00ff));
-      }*/
       
-      
-      // Render the scene with THREE.WebGLRenderer.
       renderer.render(scene, camera);
     }
 }
