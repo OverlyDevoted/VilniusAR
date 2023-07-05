@@ -133,11 +133,11 @@ function incrementLoad()
 async function activateXR() {
   // Add a canvas element and initialize a WebGL context that is compatible with WebXR.
   const canvas = document.createElement("canvas");
-  
   document.body.appendChild(canvas);
   const gl = canvas.getContext("webgl", {xrCompatible: true});
   
   console.log("Active");
+  
   // To be continued in upcoming steps.
   const scene = new THREE.Scene();
   
@@ -200,7 +200,13 @@ async function activateXR() {
   // The API directly updates the camera matrices.
   // Disable matrix auto updates so three.js doesn't attempt
   // to handle the matrices independently.
-  const camera = new THREE.PerspectiveCamera();
+  camera = new THREE.PerspectiveCamera(
+    70,
+    window.innerWidth / window.innerHeight,
+    0.01,
+    20
+  );
+
   camera.matrixAutoUpdate = false;
   createLoading(scene, camera);
   // Initialize a WebXR session using "immersive-ar".

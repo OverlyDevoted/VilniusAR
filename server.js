@@ -18,8 +18,8 @@ app.get('/', function(request, response){
 });
 
 https.createServer({
-    key: fs.readFileSync('C:\\Program Files\\Git\\usr\\bin\\cert.key'),
-    cert: fs.readFileSync('C:\\Program Files\\Git\\usr\\bin\\cert.crt')
+    key: fs.readFileSync('C:\\Users\\rober\\.ssh\\key.pem'),
+    cert: fs.readFileSync('C:\\Users\\rober\\.ssh\\cert.pem')
 },
 app).listen(3000, function(){
     console.log("Demo running at https://localhost:3000/");
