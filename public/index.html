@@ -10,7 +10,7 @@
   <script src="https://unpkg.com/three@0.126.0/build/three.js"></script>
   <script src="https://unpkg.com/three@0.126.0/examples/js/loaders/GLTFLoader.js"></script>
   <!-- Styles -->
-  <link rel="stylesheet" href="./static/resources/Styles/ar.css">
+  <link rel="stylesheet" href="https://cdn.statically.io/gh/OverlyDevoted/VilniusAR/pages/public/resources/Styles/ar.css">
 </head>
 <body>
 <div id="element_container">
@@ -52,7 +52,7 @@ let poiInf = [];
 function createMarker(scene)
 {
 //marker setup
-  const texture = new THREE.TextureLoader().load( './static/resources/Icons/fingerprint.png');
+  const texture = new THREE.TextureLoader().load( 'https://cdn.statically.io/gh/OverlyDevoted/VilniusAR/pages/public/resources/Icons/fingerprint.png');
   const material =  new THREE.MeshLambertMaterial( { map: texture });
   material.opacity = 1.0;
   material.color.set(0xffffff);
@@ -68,7 +68,7 @@ function createMarker(scene)
 function createPOI(scene)
 {
 //marker setup
-  const texture = new THREE.TextureLoader().load( './static/resources/Icons/poi.png');
+  const texture = new THREE.TextureLoader().load( 'https://cdn.statically.io/gh/OverlyDevoted/VilniusAR/pages/public/resources/Icons/poi.png');
   const material =  new THREE.MeshStandardMaterial( {color: 0xffff00, map:texture });
   material.opacity = 1.0;
   poiMarker = new THREE.Mesh(new THREE.CircleGeometry(0.1, 32), material);
@@ -96,7 +96,7 @@ function createLoading(scene, parent)
   loadingGroup.add(loadingBackground);
 
   const fontLoader = new THREE.FontLoader();
-  fontLoader.load('./static/resources/Fonts/Roboto_Bold.json', function (font){
+  fontLoader.load('https://cdn.statically.io/gh/OverlyDevoted/VilniusAR/pages/public/resources/Fonts/Roboto_Bold.json', function (font){
     const geometry = new THREE.TextGeometry('Loading', {
       font: font,
       size: 0.1,
@@ -148,23 +148,16 @@ async function activateXR() {
  
   addPoi(
     loader,
-    "./static/resources/Rajonai/VilniusMap1-10.gltf", 
-    new THREE.Vector3(1,0,0), 
-    0.45, 
-    new THREE.Vector3(0.1,0.1,0.1)
-  );
-  addPoi(
-    loader,
-    "./static/resources/Rajonai/Centr.glb", 
-    new THREE.Vector3(0,0,1), 
+    "https://cdn.statically.io/gh/OverlyDevoted/VilniusAR/pages/public/resources/Rajonai/VGTU2.gltf", 
+    new THREE.Vector3(1,0,1), 
     0.5, 
     new THREE.Vector3(0.1,0.1,0.1)
   );
   
   addPoi(
     loader,
-    "./static/resources/Rajonai/PavilJonas.gltf", 
-    new THREE.Vector3(0,0,-1), 
+    "https://cdn.statically.io/gh/OverlyDevoted/VilniusAR/pages/public/resources/Rajonai/PavilJonas.gltf", 
+    new THREE.Vector3(1,0,-1), 
     0.5, 
     new THREE.Vector3(0.1,0.1,0.1)
   );
