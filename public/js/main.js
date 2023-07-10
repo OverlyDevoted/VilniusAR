@@ -1,4 +1,4 @@
-import ARScene from "./objectHandler";
+import ARScene from "./objectHandler.js";
 const ARStates = {
     pre: 0,
     waitForPlace: 1,
