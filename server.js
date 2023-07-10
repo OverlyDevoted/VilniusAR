@@ -11,10 +11,10 @@ app.use("/static",express.static('public'));
 app.use("/modules",express.static('node_modules'));
 console.log(__dirname);
 app.get('/vilnius-ar', function(request, response){
-    response.sendFile(path.join(__dirname + '/public/index.html'));
+    response.sendFile(path.join(__dirname + '/public/main.html'));
 });
 app.get('/', function(request, response){
-    response.sendFile(path.join(__dirname + '/public/main.html'));
+    response.sendFile(path.join(__dirname + '/public/index.html'));
 });
 
 https.createServer({
