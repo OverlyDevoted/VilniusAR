@@ -10,14 +10,16 @@
   <script src="https://unpkg.com/three@0.126.0/build/three.js"></script>
   <script src="https://unpkg.com/three@0.126.0/examples/js/loaders/GLTFLoader.js"></script>
   <!-- Styles -->
-  <link rel="stylesheet" href="https://cdn.statically.io/gh/OverlyDevoted/VilniusAR/pages/public/resources/Styles/ar.css">
+  <link rel="stylesheet" href="./resources/Styles/ar.css">
 </head>
 <body>
-  <div id="element_container">
+  <div id="overlay">
     <!-- Starting an immersive WebXR session requires user interaction.
       We start this one with a simple button. -->
-      <button id="start_button">Start Vilnius AR</button>
+      <button id="start_button" disabled>XR not found</button>\
+      <button id="debug">Debug</button>
+      <div id="warning-zone"></div>
     </div>
   </body>
-  <script src="./static/js/main.js"></script>
+  <script type="module" src="./js/main.js"></script>
 </html>
