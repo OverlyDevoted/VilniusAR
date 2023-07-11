@@ -33,6 +33,7 @@ function checkSupportedState() {
     });
 }
 function activateXR() {
+    document.getElementById("warning-zone").innerText = "Change";
     console.log("Activating XR")
     if (!window.isSecureContext) {
         let message = "WebXR unavailable due to insecure context";
