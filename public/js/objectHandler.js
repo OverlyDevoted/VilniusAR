@@ -22,7 +22,7 @@ export default class ARScene {
         this.loader = new THREE.GLTFLoader();
         this.addPoi(
             this.loader,
-            "https://cdn.statically.io/gh/OverlyDevoted/VilniusAR/pages/public/resources/Rajonai/VGTU2.gltf",
+            "https://cdn.statically.io/gh/OverlyDevoted/VilniusAR/pages/public/resources/Rajonai/PavilJonas.gltf",
             this.poiInf,
             new THREE.Vector3(1, 0, 0),
             0.45,

@@ -38,3 +38,6 @@ canvas {
     margin: 0;
     touch-action: none;
 }
+#warning-zone {
+    color: white;
+}

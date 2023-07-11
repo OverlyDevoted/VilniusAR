@@ -5,8 +5,6 @@ const ARStates = {
     placed: 2
 }
 
-
-
 let currentState = ARStates.pre;
 let debugMode = false;
 let scene, camera, renderer;
@@ -19,10 +17,11 @@ let debugButton = document.getElementById("debug");
 
 // WebGL scene globals.
 let gl = null;
-let eventFunction;
 let objectHandler;
 
 function checkSupportedState() {
+    console.log("Log")
+    document.getElementById("warning-zone").innerText = "Fine";
     navigator.xr.isSessionSupported('immersive-ar').then((supported) => {
         if (supported) {
             xrButton.innerHTML = 'Enter AR';
@@ -34,6 +33,7 @@ function checkSupportedState() {
     });
 }
 function activateXR() {
+    console.log("Activating XR")
     if (!window.isSecureContext) {
         let message = "WebXR unavailable due to insecure context";
         document.getElementById("warning-zone").innerText = message;
@@ -43,6 +43,10 @@ function activateXR() {
         navigator.xr.addEventListener('devicechange', checkSupportedState);
         checkSupportedState();
         debugButton.addEventListener('click', enableDebug)
+        document.getElementById("warning-zone").innerText = "Fine";
+    }
+    else {
+        document.getElementById("warning-zone").innerText = "Navigator is not XR";
     }
 }
 
@@ -76,26 +80,21 @@ function onSessionStarted(session) {
         session.requestAnimationFrame(onXRFrame);
     });
 
-    
-    
-    
     objectHandler = new ARScene(session, canvas, gl);
-    
-    //window.addEventListener("resize", onWindowResize, false);
 }
 
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
-  }
+}
 
 function onXRFrame(t, frame) {
     let session = frame.session;
     session.requestAnimationFrame(onXRFrame);
 
     gl.bindFramebuffer(gl.FRAMEBUFFER, session.renderState.baseLayer.framebuffer);
-    
+
     objectHandler.render();
 }
 function onRequestSessionError(ex) {
@@ -119,5 +118,4 @@ function enableDebug() {
     debugMode = !debugMode;
     console.log("Debug mode: " + debugMode);
 }
-
-activateXR()
+activateXR();
