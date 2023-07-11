@@ -35,6 +35,7 @@ function checkSupportedState() {
 function activateXR() {
     document.getElementById("warning-zone").innerText = "Change";
     console.log("Activating XR")
+    checkSupportedState();
     if (!window.isSecureContext) {
         let message = "WebXR unavailable due to insecure context";
         document.getElementById("warning-zone").innerText = message;
@@ -42,9 +43,9 @@ function activateXR() {
     if (navigator.xr) {
         xrButton.addEventListener('click', onButtonClicked);
         navigator.xr.addEventListener('devicechange', checkSupportedState);
-        checkSupportedState();
         debugButton.addEventListener('click', enableDebug)
         document.getElementById("warning-zone").innerText = "Fine";
+        
     }
     else {
         document.getElementById("warning-zone").innerText = "Navigator is not XR";
