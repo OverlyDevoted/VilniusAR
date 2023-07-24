@@ -1,5 +1,3 @@
-import * as THREE from 'three';
-
 let renderer = null;
 let scene = null;
 let camera = null;
