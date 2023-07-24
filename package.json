@@ -1,6 +1,10 @@
 {
   "type": "module",
   "dependencies": {
+    "@babel/cli": "^7.22.9",
+    "@babel/core": "^7.22.9",
+    "@babel/preset-env": "^7.22.9",
+    "@parcel/babel-preset-env": "^2.9.3",
     "express": "^4.18.2",
     "three": "^0.149.0"
   },
