@@ -1,6 +1,3 @@
-import * as THREE from './three.js/build/three.module.js';
-import { GLTFLoader } from './three.js/examples/jsm/loaders/GLTFLoader.js'
-
 let renderer = null;
 let scene = null;
 let camera = null;
