@@ -1,9 +1,10 @@
 <!doctype html>
 <html>
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <title>VilniusAR</title>
 
   <!-- three.js -->
@@ -12,14 +13,15 @@
   <!-- Styles -->
   <link rel="stylesheet" href="./resources/Styles/ar.css">
 </head>
+
 <body>
   <div id="overlay">
-    <!-- Starting an immersive WebXR session requires user interaction.
-      We start this one with a simple button. -->
-      <button id="start_button" disabled>XR not found</button>
-      <button id="debug">Debug</button>
-      <div id="warning-zone">Warning zone</div>
+    <div class="info-area">
+      <div id="info"></div>
+      <button id="xr-button" disabled>XR not found</button>
     </div>
-  </body>
-  <script type="module" src="./js/main.js"></script>
+  </div>
+</body>
+<script type="module" src="./js/main.js"></script>
+
 </html>
